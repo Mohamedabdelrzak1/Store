@@ -14,10 +14,15 @@ namespace Service.MappingProfiles
         public ProductProfile()
         {
             CreateMap<Product, ProductDto>()
-                .ForMember(dist => dist.BrandName,
-                 Options => Options.MapFrom(Src => Src.productBrand.Name))
-                .ForMember(dist => dist.TypeName,
-                 Options => Options.MapFrom(Src => Src.productType.Name));
+    .ForMember(dest => dest.BrandName,
+        opt => opt.MapFrom(src => src.productBrand.Name))
+    .ForMember(dest => dest.TypeName,
+        opt => opt.MapFrom(src => src.productType.Name))
+    .ForMember(dest => dest.PictureUrl, opt => opt.MapFrom<PictureUrlResolver>());
+    //.ForMember(dest => dest.PictureUrl,
+    //    opt => opt.MapFrom(src => $"https://localhost:44348/{src.PictureUrl}"));
+
+
 
             CreateMap<ProductType ,TypeDto>();
             CreateMap<ProductBrand ,BrandDto>();
