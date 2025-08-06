@@ -2,6 +2,7 @@
 using Domain.Contracts;
 using Domain.Models.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using ServiceAbstraction;
 using Shared.Dto;
@@ -15,6 +16,7 @@ namespace Service
         private readonly Lazy<ICacheService> _lazyCacheService;
         private readonly Lazy<IAuthService> _lazyAuthService;
         private readonly Lazy<IOrderService> _lazyOrderService;
+        private readonly Lazy<IPaymentService> _lazyPaymentService;
        
 
         public ServiceManager(
@@ -23,13 +25,15 @@ namespace Service
             IBasketRepository basketRepository,
             ICacheRepository cacheRepository,
             UserManager<AppUser> userManager,
-            IOptions<JwtOptions> options)
+            IOptions<JwtOptions> options,
+            IConfiguration configuration)
         {
             _lazyProductService = new Lazy<IProductService>(() => new ProductService(unitOfWork, mapper));
             _lazyBasketService = new Lazy<IBasketService>(() => new BasketService(basketRepository, mapper));
             _lazyCacheService = new Lazy<ICacheService>(() => new CacheService(cacheRepository, mapper));
             _lazyAuthService = new Lazy<IAuthService>(() => new AuthService(mapper, userManager, options));
             _lazyOrderService = new Lazy<IOrderService>(() => new OrderService(mapper, unitOfWork, basketRepository));
+            _lazyPaymentService = new Lazy<IPaymentService>(() => new PaymentsService(basketRepository , unitOfWork, mapper, configuration));
         }
 
         public IProductService ProductService => _lazyProductService.Value;
@@ -38,5 +42,7 @@ namespace Service
         public IAuthService AuthService => _lazyAuthService.Value;
 
         public IOrderService OrderService => _lazyOrderService.Value;
+
+        public IPaymentService PaymentService => _lazyPaymentService.Value;
     }
 }

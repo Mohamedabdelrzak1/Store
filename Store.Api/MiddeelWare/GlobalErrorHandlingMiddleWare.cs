@@ -55,6 +55,7 @@ namespace Presentation.MiddeelWare
             {
                 NotFoundExceptions => StatusCodes.Status404NotFound,
                 BadRequestException => StatusCodes.Status400BadRequest,
+                UnAuthorizedException => StatusCodes.Status401Unauthorized, 
                 ValidationException => HandingValidationErrorAsync((ValidationException)ex, response),
                 _ => StatusCodes.Status500InternalServerError,
             };

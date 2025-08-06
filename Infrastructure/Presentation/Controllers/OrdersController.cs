@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.Controllers.Auth
+namespace Presentation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
