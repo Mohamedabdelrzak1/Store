@@ -36,7 +36,15 @@ namespace Store.Api.Extensions
 
             services.ConfigurService();
 
-
+            services.AddCors(config =>
+            {
+                config.AddPolicy("MyPolicy", options =>
+                {
+                    options.AllowAnyHeader();
+                    options.AllowAnyMethod();
+                    options.WithOrigins("http://localhost:4200");
+                });
+            });
 
 
 
@@ -154,9 +162,10 @@ namespace Store.Api.Extensions
             }
 
             app.UseStaticFiles();
+            app.UseCors("MyPolicy");
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

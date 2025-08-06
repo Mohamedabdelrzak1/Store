@@ -24,10 +24,10 @@ namespace Service
         public async Task<UserResultDto> LoginAsync(LoginDto loginDto)
         {
             var user = await userManager.FindByEmailAsync(loginDto.Email);
-            if (user is null) throw new UnAuthorizedException();
+            if (user is null) throw new UnAuthorizedException("Invalid Email Or Password");
 
             var flag = await userManager.CheckPasswordAsync(user, loginDto.Password);
-            if (!flag) throw new UnAuthorizedException();
+            if (!flag) throw new UnAuthorizedException("Invalid Email Or Password");
 
             return new UserResultDto()
             {
